@@ -1,0 +1,186 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String
+  passwordHash String
+  role         String   @default("admin")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model MediaAsset {
+  id              String             @id @default(cuid())
+  filename        String
+  url             String
+  urlMedium       String             @default("")
+  alt             String
+  category        String
+  destination     String             @default("")
+  usage           String             @default("")
+  source          String             @default("")
+  sourceUrl       String             @default("")
+  author          String             @default("")
+  license         String             @default("")
+  provenance      String             @default("verified_photograph")
+  width           Int?
+  height          Int?
+  createdAt       DateTime           @default(now())
+  cityHero        City[]             @relation("CityHero")
+  attractionCover Attraction[]       @relation("AttractionCover")
+  cityLinks       CityMedia[]
+  attractionLinks AttractionMedia[]
+
+  @@index([category])
+}
+
+model City {
+  id               String            @id @default(cuid())
+  name             String
+  slug             String            @unique
+  state            String
+  region           String
+  shortDescription String
+  fullDescription  String
+  bestTimeToVisit  String            @default("")
+  travelInfo       String            @default("")
+  featured         Boolean           @default(false)
+  status           String            @default("draft")
+  displayOrder     Int               @default(0)
+  isSample         Boolean           @default(false)
+  heroImageId      String?
+  heroImage        MediaAsset?       @relation("CityHero", fields: [heroImageId], references: [id], onDelete: SetNull)
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  attractions      Attraction[]
+  routes           SightseeingRoute[]
+  gallery          CityMedia[]
+
+  @@index([status, displayOrder])
+}
+
+model CityMedia {
+  cityId    String
+  mediaId   String
+  sortOrder Int        @default(0)
+  city      City       @relation(fields: [cityId], references: [id], onDelete: Cascade)
+  media     MediaAsset @relation(fields: [mediaId], references: [id], onDelete: Cascade)
+
+  @@id([cityId, mediaId])
+}
+
+model AttractionCategory {
+  id          String       @id @default(cuid())
+  name        String       @unique
+  slug        String       @unique
+  attractions Attraction[]
+}
+
+model Attraction {
+  id               String              @id @default(cuid())
+  cityId           String
+  categoryId       String?
+  name             String
+  slug             String
+  shortDescription String
+  description      String
+  location         String              @default("")
+  historicalInfo   String              @default("")
+  visitorInfo      String              @default("")
+  duration         String              @default("")
+  status           String              @default("draft")
+  displayOrder     Int                 @default(0)
+  isSample         Boolean             @default(false)
+  coverImageId     String?
+  city             City                @relation(fields: [cityId], references: [id], onDelete: Cascade)
+  category         AttractionCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  coverImage       MediaAsset?         @relation("AttractionCover", fields: [coverImageId], references: [id], onDelete: SetNull)
+  gallery          AttractionMedia[]
+  nodes            SightseeingRouteNode[]
+  createdAt        DateTime            @default(now())
+  updatedAt        DateTime            @updatedAt
+
+  @@unique([cityId, slug])
+  @@index([cityId, status, displayOrder])
+}
+
+model AttractionMedia {
+  attractionId String
+  mediaId      String
+  sortOrder    Int         @default(0)
+  attraction   Attraction  @relation(fields: [attractionId], references: [id], onDelete: Cascade)
+  media        MediaAsset  @relation(fields: [mediaId], references: [id], onDelete: Cascade)
+
+  @@id([attractionId, mediaId])
+}
+
+model SightseeingRoute {
+  id           String                 @id @default(cuid())
+  cityId       String
+  name         String
+  description  String                 @default("")
+  status       String                 @default("draft")
+  displayOrder Int                    @default(0)
+  city         City                   @relation(fields: [cityId], references: [id], onDelete: Cascade)
+  nodes        SightseeingRouteNode[]
+  edges        SightseeingRouteEdge[]
+  createdAt    DateTime               @default(now())
+  updatedAt    DateTime               @updatedAt
+
+  @@index([cityId, status, displayOrder])
+}
+
+model SightseeingRouteNode {
+  id           String                 @id @default(cuid())
+  routeId      String
+  attractionId String?
+  kind         String
+  label        String                 @default("")
+  sortOrder    Int
+  route        SightseeingRoute       @relation(fields: [routeId], references: [id], onDelete: Cascade)
+  attraction   Attraction?            @relation(fields: [attractionId], references: [id], onDelete: SetNull)
+  outgoing     SightseeingRouteEdge[] @relation("EdgeFrom")
+  incoming     SightseeingRouteEdge[] @relation("EdgeTo")
+
+  @@index([routeId, sortOrder])
+}
+
+model SightseeingRouteEdge {
+  id           String               @id @default(cuid())
+  routeId      String
+  sourceNodeId String
+  targetNodeId String
+  route        SightseeingRoute     @relation(fields: [routeId], references: [id], onDelete: Cascade)
+  source       SightseeingRouteNode @relation("EdgeFrom", fields: [sourceNodeId], references: [id], onDelete: Cascade)
+  target       SightseeingRouteNode @relation("EdgeTo", fields: [targetNodeId], references: [id], onDelete: Cascade)
+
+  @@index([routeId])
+}
+
+model Enquiry {
+  id          String   @id @default(cuid())
+  fullName    String
+  email       String
+  mobile      String
+  destination String
+  message     String
+  status      String   @default("new")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([status, createdAt])
+}
+
+model Setting {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+}
