@@ -134,16 +134,32 @@
 @keyframes hv-from-left {
   from {
     opacity: 0;
-    transform: translateX(-28px) scale(0.92);
+    transform: translateX(-46px);
+    filter: blur(5px);
   }
   to {
     opacity: 1;
     transform: none;
+    filter: none;
   }
 }
 
 .hv-from-left {
-  animation: hv-from-left 0.72s cubic-bezier(0.16, 0.84, 0.32, 1) both;
+  animation: hv-from-left 0.9s cubic-bezier(0.16, 0.84, 0.24, 1) both;
+}
+
+.hv-rule {
+  transform-origin: left center;
+  animation: hv-rule 0.9s cubic-bezier(0.16, 0.84, 0.24, 1) 1.05s both;
+}
+
+@keyframes hv-rule {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
 }
 
 @keyframes hv-rise {
@@ -176,20 +192,6 @@
   animation: hv-photo 0.7s ease;
 }
 
-@keyframes hv-draw {
-  from {
-    stroke-dashoffset: 1;
-  }
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-
-.hv-draw {
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-  animation: hv-draw 4.4s ease forwards;
-}
 
 @media (prefers-reduced-motion: reduce) {
   html {

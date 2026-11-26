@@ -33,23 +33,6 @@ export function NameIntro() {
       }`}
       role="presentation"
     >
-      <svg className="pointer-events-none absolute inset-x-0 top-0 h-[42%] w-full" viewBox="0 0 1000 320" preserveAspectRatio="none" aria-hidden>
-        <path d="M80 250 A 420 180 0 0 1 920 250" fill="none" stroke="#F1C40F" strokeWidth="1.25" opacity="0.35" />
-        <circle cx="80" cy="250" r="3.5" fill="#F1C40F" opacity="0.8" />
-        <circle cx="920" cy="250" r="3.5" fill="#F1C40F" opacity="0.8" />
-      </svg>
-      <svg className="pointer-events-none absolute inset-0 h-full w-full" viewBox="0 0 1440 900" preserveAspectRatio="none" aria-hidden>
-        <path
-          className="hv-draw"
-          pathLength="1"
-          d="M28 860 C 18 640, 70 520, 150 430 C 210 360, 120 250, 196 188 C 272 126, 368 196, 348 276 C 330 348, 214 348, 196 268 C 184 214, 292 168, 430 186 C 640 214, 760 92, 980 64 C 1160 42, 1300 28, 1432 36"
-          fill="none"
-          stroke="#F1C40F"
-          strokeWidth="2.2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
       <div className="pointer-events-none absolute left-6 top-6 h-8 w-8 border-l border-t border-gold/50 md:left-10 md:top-10" />
       <div className="pointer-events-none absolute right-6 top-6 h-8 w-8 border-r border-t border-gold/50 md:right-10 md:top-10" />
       <div className="pointer-events-none absolute bottom-6 left-6 h-8 w-8 border-b border-l border-gold/50 md:bottom-10 md:left-10" />
@@ -70,7 +53,8 @@ export function NameIntro() {
             Hindu Vista
           </p>
           <Wordmark tone="inverse" large sequence />
-          <p className="hv-rise mx-auto mt-8 max-w-md text-sm leading-relaxed text-ivory/70" style={{ animationDelay: "1500ms" }}>
+          <span className="hv-rule mx-auto mt-5 block h-px w-36 bg-gold" />
+          <p className="hv-rise mx-auto mt-6 max-w-md text-sm leading-relaxed text-ivory/70" style={{ animationDelay: "1500ms" }}>
             A travel desk for the place itself. Six sample cities, then the landing page.
           </p>
         </div>
