@@ -10,3 +10,4 @@ public/uploads/*
 .DS_Store
 /dev.db
 tsconfig.tsbuildinfo
+.vercel
