@@ -3,10 +3,10 @@ import { CityScrollMap, type MapStop } from "@/components/site/city-scroll-map";
 import { EnquiryForm } from "@/components/site/enquiry-form";
 import { Eyebrow } from "@/components/site/markup";
 import { Photo } from "@/components/site/photo";
+import { PinLines } from "@/components/site/pin-lines";
 import { PlaceCards, type PlaceCard } from "@/components/site/place-cards";
 import { StorySlideshow } from "@/components/site/story-slideshow";
 import { ZoomParallax } from "@/components/ui/zoom-parallax";
-import { Reveal } from "@/components/site/reveal";
 import { readWhyItems } from "@/lib/defaults";
 import { prisma } from "@/lib/prisma";
 import { getSettings, resolvePicture } from "@/lib/settings";
@@ -63,7 +63,7 @@ export default async function HomePage() {
             alt={hero?.alt || ""}
             priority
             sizes="100vw"
-            className="hero-settle"
+            className="hero-settle hv-parallax"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-slatedeep/85 via-slatedeep/45 to-transparent" />
           <div className="relative mx-auto flex min-h-[100svh] max-w-page items-end px-5 py-16 md:px-10 md:py-24">
@@ -86,7 +86,7 @@ export default async function HomePage() {
 
       <section id="about" className="mx-auto max-w-page px-5 py-20 md:px-10 md:py-28">
         <div className="grid gap-12 lg:grid-cols-12">
-          <Reveal className="lg:col-span-5">
+          <div className="lg:col-span-5" data-fx="left">
             <Eyebrow>About us</Eyebrow>
             <h2 className="mt-4 font-serif text-4xl font-semibold leading-tight md:text-5xl">{settings.about_title}</h2>
             <div className="mt-6 space-y-4 text-base leading-relaxed text-mute">
@@ -103,16 +103,16 @@ export default async function HomePage() {
                 The name on the mark is Hinduvista, with हिन्दुविस्टा beside it. The letters are VI, a gold ह, and TA, set in Playfair Display on Deep Slate and Warm White. Read the page from the city map, then the reason for the desk, then the enquiry.
               </p>
             </div>
-          </Reveal>
-          <div className="grid gap-4 sm:grid-cols-2 lg:col-span-7">
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2 lg:col-span-7" data-fx="right">
             {aboutPhotos.map((image) => (
               <figure key={image.id} className="relative min-h-72 overflow-hidden bg-slatebrand">
-                <Photo src={image.urlMedium || image.url} alt={image.alt} sizes="(min-width: 1024px) 28vw, 50vw" />
+                <Photo src={image.urlMedium || image.url} alt={image.alt} sizes="(min-width: 1024px) 28vw, 50vw" className="hv-parallax" />
               </figure>
             ))}
           </div>
         </div>
-        <dl className="mt-12 grid gap-6 border-t border-line pt-8 md:grid-cols-3">
+        <dl className="mt-12 grid gap-6 border-t border-line pt-8 md:grid-cols-3" data-fx="stagger">
           <div>
             <dt className="font-serif text-xl">How a visit starts</dt>
             <dd className="mt-2 text-sm leading-relaxed text-mute">Choose a city on the map, read the place named at that stop, then send an enquiry if you want the desk to arrange around it.</dd>
@@ -142,9 +142,9 @@ export default async function HomePage() {
           <div className="grid gap-8 lg:grid-cols-12">
             <div className="lg:col-span-4">
               <Eyebrow>Why us</Eyebrow>
-              <h2 className="mt-4 font-serif text-4xl font-semibold md:text-5xl">A desk for the place itself.</h2>
+              <h2 data-fx="text" className="mt-4 font-serif text-4xl font-semibold md:text-5xl">A desk for the place itself.</h2>
             </div>
-            <div className="space-y-4 text-sm leading-relaxed text-mute lg:col-span-8 lg:pt-10">
+            <div className="space-y-4 text-sm leading-relaxed text-mute lg:col-span-8 lg:pt-10" data-fx="fade">
               <p>
                 Hindu Vista is built for someone who wants to look at a city before asking for a journey. The map moves through Jaipur, Udaipur, Agra, Delhi, Varanasi and Mysuru. Each stop shows the place and a photograph. An enquiry is kept for the desk, and a reply is what confirms a journey.
               </p>
@@ -153,15 +153,16 @@ export default async function HomePage() {
               </p>
             </div>
           </div>
-          <div className="mt-12 grid gap-4 sm:grid-cols-3">
-            {whyPhotos.map((photo) => (
-              <figure key={photo.src} className="overflow-hidden bg-slatebrand">
-                <img src={photo.src} alt={photo.alt} className="h-56 w-full object-cover" />
-                <figcaption className="bg-white px-3 py-2 text-xs uppercase tracking-[0.16em] text-ink">{photo.caption}</figcaption>
-              </figure>
-            ))}
-          </div>
-          <div className="mt-12 grid gap-8 md:grid-cols-2">
+          <div className="mt-12 grid items-start gap-8 lg:grid-cols-12">
+            <div className="grid gap-4 sm:grid-cols-3 lg:sticky lg:top-24 lg:col-span-5 lg:grid-cols-1 lg:self-start" data-fx="fade">
+              {whyPhotos.map((photo) => (
+                <figure key={photo.src} className="overflow-hidden bg-slatebrand">
+                  <img src={photo.src} alt={photo.alt} className="hv-parallax h-48 w-full object-cover lg:h-40" />
+                  <figcaption className="bg-white px-3 py-2 text-xs uppercase tracking-[0.16em] text-ink">{photo.caption}</figcaption>
+                </figure>
+              ))}
+            </div>
+            <div className="grid gap-8 lg:col-span-7" data-fx="stagger">
             {why.map((item, index) => (
               <article key={item.title} className="border-t border-line pt-6">
                 <p className="font-serif text-2xl text-goldink">{String(index + 1).padStart(2, "0")}</p>
@@ -177,21 +178,24 @@ export default async function HomePage() {
                 The pictures are photographs of real places, kept on this site. The photographer and the licence for each one are listed on the credits page, so a picture is not presented as an invented view.
               </p>
             </article>
+            </div>
           </div>
         </div>
       </section>
 
+      <PinLines />
+
       <section className="mx-auto max-w-page px-5 py-20 md:px-10 md:py-28">
         <Eyebrow>{settings.attractions_eyebrow}</Eyebrow>
-        <h2 className="mt-4 font-serif text-4xl font-semibold md:text-5xl">{settings.attractions_title}</h2>
-        <div className="mt-12">
+        <h2 data-fx="text" className="mt-4 font-serif text-4xl font-semibold md:text-5xl">{settings.attractions_title}</h2>
+        <div className="mt-12" data-fx="up">
           <PlaceCards items={placeCards(places)} />
         </div>
       </section>
 
       <section id="frames" className="mx-auto max-w-page px-5 py-20 md:px-10 md:py-28">
         <Eyebrow>{settings.inspiration_eyebrow}</Eyebrow>
-        <h2 className="mt-4 font-serif text-4xl font-semibold md:text-5xl">{settings.inspiration_title}</h2>
+        <h2 data-fx="text" className="mt-4 font-serif text-4xl font-semibold md:text-5xl">{settings.inspiration_title}</h2>
         <p className="mt-5 max-w-2xl text-sm leading-relaxed text-mute">{settings.inspiration_text}</p>
         <div className="mt-8">
           <ZoomParallax images={frameImages} />
@@ -201,11 +205,11 @@ export default async function HomePage() {
       <section id="stories" className="bg-slatebrand text-ivory">
         <div className="mx-auto max-w-5xl px-5 py-12 md:px-8 md:py-16">
           <Eyebrow tone="light">Testimonials</Eyebrow>
-          <h2 className="mt-3 max-w-xl font-serif text-3xl font-semibold italic leading-tight md:text-4xl">Here is what our happy travellers want to tell.</h2>
-          <p className="mt-3 max-w-xl text-sm leading-relaxed text-ivory/75">
+          <h2 data-fx="text" className="mt-3 max-w-xl font-serif text-3xl font-semibold italic leading-tight md:text-4xl">Here is what our happy travellers want to tell.</h2>
+          <p data-fx="fade" className="mt-3 max-w-xl text-sm leading-relaxed text-ivory/75">
             Sample lines written for this demonstration. They are not reviews from people who have travelled with Hindu Vista.
           </p>
-          <div className="mt-6">
+          <div className="mt-6" data-fx="up">
             <StorySlideshow stories={stories} />
           </div>
         </div>
@@ -213,8 +217,8 @@ export default async function HomePage() {
 
       <section id="questions" className="mx-auto max-w-page px-5 py-20 md:px-10 md:py-28">
         <Eyebrow>FAQ</Eyebrow>
-        <h2 className="mt-4 font-serif text-4xl font-semibold md:text-5xl">Questions the page can answer.</h2>
-        <div className="mt-10 divide-y divide-line border-y border-line">
+        <h2 data-fx="text" className="mt-4 font-serif text-4xl font-semibold md:text-5xl">Questions the page can answer.</h2>
+        <div className="mt-10 divide-y divide-line border-y border-line" data-fx="stagger">
           {questions.map((item) => (
             <details key={item.q} className="group py-5">
               <summary className="cursor-pointer list-none font-serif text-2xl marker:content-none">
@@ -231,12 +235,12 @@ export default async function HomePage() {
 
       <section id="enquire" className="border-t border-line">
         <div className="mx-auto grid max-w-page gap-10 px-5 py-20 md:px-10 lg:grid-cols-12">
-          <div className="lg:col-span-4">
+          <div className="lg:col-span-4" data-fx="left">
             <Eyebrow>Enquiry</Eyebrow>
             <h2 className="mt-4 font-serif text-4xl font-semibold">{settings.enquiry_title}</h2>
             <p className="mt-4 text-sm leading-relaxed text-mute">{settings.enquiry_text}</p>
           </div>
-          <div className="lg:col-span-8">
+          <div className="lg:col-span-8" data-fx="fade">
             <EnquiryForm destinations={cities.map((city) => city.name)} />
           </div>
         </div>
