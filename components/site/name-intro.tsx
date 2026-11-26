@@ -1,16 +1,17 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Wordmark } from "@/components/site/wordmark";
+
+const CITIES = ["Jaipur", "Udaipur", "Agra", "Delhi", "Varanasi", "Mysuru"];
 
 export function NameIntro() {
   const [phase, setPhase] = useState<"open" | "close" | "done">("open");
-  const plane = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const hold = window.setTimeout(() => setPhase("close"), reduce ? 500 : 4600);
-    const done = window.setTimeout(() => setPhase("done"), reduce ? 700 : 5300);
+    const hold = window.setTimeout(() => setPhase("close"), reduce ? 500 : 5600);
+    const done = window.setTimeout(() => setPhase("done"), reduce ? 700 : 6400);
     document.body.style.overflow = "hidden";
     return () => {
       window.clearTimeout(hold);
@@ -23,56 +24,6 @@ export function NameIntro() {
     if (phase === "done") document.body.style.overflow = "";
   }, [phase]);
 
-  useEffect(() => {
-    const node = plane.current;
-    if (!node) return;
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) return;
-
-    const width = () => window.innerWidth;
-    const height = () => window.innerHeight;
-    let x = width() * 0.18;
-    let y = height() * 0.28;
-    let heading = -0.35;
-    let frame = 0;
-
-    const nextTarget = () => {
-      const bend = (Math.random() - 0.5) * 1.1;
-      const travel = Math.min(width(), height()) * (0.28 + Math.random() * 0.22);
-      const aim = heading + bend;
-      return {
-        x: Math.min(width() - 48, Math.max(48, x + Math.cos(aim) * travel)),
-        y: Math.min(height() - 48, Math.max(48, y + Math.sin(aim) * travel)),
-      };
-    };
-
-    let target = nextTarget();
-    let raf = 0;
-
-    const tick = () => {
-      const dx = target.x - x;
-      const dy = target.y - y;
-      const distance = Math.hypot(dx, dy) || 1;
-      if (distance < 70) target = nextTarget();
-      const desired = Math.atan2(target.y - y, target.x - x);
-      let delta = desired - heading;
-      while (delta > Math.PI) delta -= Math.PI * 2;
-      while (delta < -Math.PI) delta += Math.PI * 2;
-      heading += Math.max(-0.028, Math.min(0.028, delta));
-      const speed = 1.35 + Math.sin(frame / 90) * 0.15;
-      x += Math.cos(heading) * speed;
-      y += Math.sin(heading) * speed;
-      x = Math.min(width() - 36, Math.max(36, x));
-      y = Math.min(height() - 36, Math.max(36, y));
-      frame += 1;
-      node.style.transform = `translate3d(${x}px, ${y}px, 0) rotate(${(heading * 180) / Math.PI}deg)`;
-      raf = window.requestAnimationFrame(tick);
-    };
-
-    raf = window.requestAnimationFrame(tick);
-    return () => window.cancelAnimationFrame(raf);
-  }, []);
-
   if (phase === "done") return null;
 
   return (
@@ -82,14 +33,46 @@ export function NameIntro() {
       }`}
       role="presentation"
     >
-      <div ref={plane} className="pointer-events-none absolute left-0 top-0 text-gold will-change-transform" aria-hidden>
-        <svg viewBox="0 0 64 32" className="h-7 w-14 -translate-x-1/2 -translate-y-1/2 md:h-8 md:w-16">
-          <path fill="currentColor" d="M2 18h18l8-12h6l-4 12h16l6-6h6L54 18l4 6h-6l-6-6H30l4 12h-6L20 18H2z" />
-        </svg>
-      </div>
-      <div className="grid h-full place-items-center">
-        <div className={`hv-name ${phase === "close" ? "opacity-0" : ""}`}>
-          <Wordmark tone="inverse" large />
+      <svg className="pointer-events-none absolute inset-x-0 top-0 h-[42%] w-full" viewBox="0 0 1000 320" preserveAspectRatio="none" aria-hidden>
+        <path d="M80 250 A 420 180 0 0 1 920 250" fill="none" stroke="#F1C40F" strokeWidth="1.25" opacity="0.35" />
+        <circle cx="80" cy="250" r="3.5" fill="#F1C40F" opacity="0.8" />
+        <circle cx="920" cy="250" r="3.5" fill="#F1C40F" opacity="0.8" />
+      </svg>
+      <svg className="pointer-events-none absolute inset-0 h-full w-full" viewBox="0 0 1440 900" preserveAspectRatio="none" aria-hidden>
+        <path
+          className="hv-draw"
+          pathLength="1"
+          d="M28 860 C 18 640, 70 520, 150 430 C 210 360, 120 250, 196 188 C 272 126, 368 196, 348 276 C 330 348, 214 348, 196 268 C 184 214, 292 168, 430 186 C 640 214, 760 92, 980 64 C 1160 42, 1300 28, 1432 36"
+          fill="none"
+          stroke="#F1C40F"
+          strokeWidth="2.2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+      <div className="pointer-events-none absolute left-6 top-6 h-8 w-8 border-l border-t border-gold/50 md:left-10 md:top-10" />
+      <div className="pointer-events-none absolute right-6 top-6 h-8 w-8 border-r border-t border-gold/50 md:right-10 md:top-10" />
+      <div className="pointer-events-none absolute bottom-6 left-6 h-8 w-8 border-b border-l border-gold/50 md:bottom-10 md:left-10" />
+      <div className="pointer-events-none absolute bottom-6 right-6 h-8 w-8 border-b border-r border-gold/50 md:bottom-10 md:right-10" />
+      <p className="absolute left-7 top-1/2 hidden -translate-y-1/2 text-[0.68rem] uppercase tracking-[0.28em] text-gold/80 [writing-mode:vertical-rl] md:block">
+        Travel in India
+      </p>
+      <ul className="pointer-events-none absolute inset-x-0 top-[8%] z-20 flex justify-center gap-4 px-16 md:gap-8">
+        {CITIES.map((city, index) => (
+          <li key={city} className="hv-rise text-[0.62rem] uppercase tracking-[0.18em] text-ivory/55 md:text-xs" style={{ animationDelay: `${400 + index * 120}ms` }}>
+            {city}
+          </li>
+        ))}
+      </ul>
+      <div className="relative z-20 grid h-full place-items-center px-6">
+        <div className={`text-center ${phase === "close" ? "opacity-0 transition-opacity duration-300" : ""}`}>
+          <p className="hv-rise mb-6 text-[0.68rem] uppercase tracking-[0.32em] text-gold" style={{ animationDelay: "40ms" }}>
+            Hindu Vista
+          </p>
+          <Wordmark tone="inverse" large sequence />
+          <p className="hv-rise mx-auto mt-8 max-w-md text-sm leading-relaxed text-ivory/70" style={{ animationDelay: "1500ms" }}>
+            A travel desk for the place itself. Six sample cities, then the landing page.
+          </p>
         </div>
       </div>
     </div>

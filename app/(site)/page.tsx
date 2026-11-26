@@ -199,7 +199,7 @@ export default async function HomePage() {
       </section>
 
       <section id="stories" className="bg-slatebrand text-ivory">
-        <div className="mx-auto max-w-3xl px-5 py-12 md:px-8 md:py-16">
+        <div className="mx-auto max-w-5xl px-5 py-12 md:px-8 md:py-16">
           <Eyebrow tone="light">Testimonials</Eyebrow>
           <h2 className="mt-3 max-w-xl font-serif text-3xl font-semibold italic leading-tight md:text-4xl">Here is what our happy travellers want to tell.</h2>
           <p className="mt-3 max-w-xl text-sm leading-relaxed text-ivory/75">
@@ -249,22 +249,42 @@ const stories = [
   {
     place: "Jaipur",
     line: "The map settled on Amber Fort before I had to ask what the city was for.",
+    image: "/images/attractions/jaipur-amber-fort-960.webp",
+    alt: "Amber Fort in Jaipur",
+    imageTwo: "/images/attractions/jaipur-hawa-mahal-960.webp",
+    altTwo: "Hawa Mahal in Jaipur",
   },
   {
     place: "Udaipur",
     line: "The lake stayed on the page long enough for me to know this was the city I wanted to write about.",
+    image: "/images/attractions/udaipur-lake-pichola-960.webp",
+    alt: "Lake Pichola in Udaipur",
+    imageTwo: "/images/attractions/udaipur-city-palace-960.webp",
+    altTwo: "City Palace in Udaipur",
   },
   {
     place: "Varanasi",
     line: "I could read the ghat and the shrine, then write to the desk without a price appearing first.",
+    image: "/images/attractions/varanasi-dashashwamedh-ghat-960.webp",
+    alt: "Dashashwamedh Ghat in Varanasi",
+    imageTwo: "/images/attractions/varanasi-kashi-vishwanath-960.webp",
+    altTwo: "Kashi Vishwanath in Varanasi",
   },
   {
     place: "Agra",
     line: "One photograph of the riverfront was enough. I sent the enquiry the same evening.",
+    image: "/images/attractions/agra-taj-mahal-960.webp",
+    alt: "The Taj Mahal in Agra",
+    imageTwo: "/images/attractions/agra-fort-960.webp",
+    altTwo: "Agra Fort",
   },
   {
     place: "Mysuru",
     line: "One city stayed on the page long enough to decide whether to send a message.",
+    image: "/images/attractions/mysuru-palace-960.webp",
+    alt: "Amba Vilas Palace in Mysuru",
+    imageTwo: "/images/attractions/mysuru-chamundi-hill-960.webp",
+    altTwo: "Chamundi Hill in Mysuru",
   },
 ];
 

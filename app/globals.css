@@ -131,6 +131,66 @@
   animation: hv-quote 0.45s ease;
 }
 
+@keyframes hv-from-left {
+  from {
+    opacity: 0;
+    transform: translateX(-28px) scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.hv-from-left {
+  animation: hv-from-left 0.72s cubic-bezier(0.16, 0.84, 0.32, 1) both;
+}
+
+@keyframes hv-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.hv-rise {
+  animation: hv-rise 0.8s ease both;
+}
+
+@keyframes hv-photo {
+  from {
+    opacity: 0;
+    transform: scale(1.05);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.hv-photo {
+  animation: hv-photo 0.7s ease;
+}
+
+@keyframes hv-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.hv-draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: hv-draw 4.4s ease forwards;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
